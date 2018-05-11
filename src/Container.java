@@ -9,7 +9,7 @@ public class Container extends JPanel {
 		setPreferredSize(new Dimension(800,600));
 	}
 	void draw() {
-		ImageContainer imageContainer = new ImageContainer(new ImageIcon("D:\\NenAnh\\src\\images\\marbles.bmp").getImage());
+		ImageContainer imageContainer = new ImageContainer(null);
 		imageContainer.setBounds(0, 30, getPreferredSize().width, getPreferredSize().height-30);
 		add(imageContainer);
 		ToolBar toolbar = new ToolBar(imageContainer);
