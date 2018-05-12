@@ -7,19 +7,19 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 
-public class ColorAdjustment extends JFrame {
+public class BrightnessAdjustment extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField hueFigure;
-	private JTextField satFigure;
+	private JTextField brightnessFigure;
+	private JTextField contrastFigure;
 	JButton okButton = new JButton("OK");
 	JButton cancelButton = new JButton("Cancel");
-	JSlider hueSlider = new JSlider();
-	JSlider satSlicer = new JSlider();
+	JSlider brightnessSlider = new JSlider();
+	JSlider contrastSlicer = new JSlider();
 	Font tahoma14 = new Font("Tahoma", Font.PLAIN, 14);
 	{
-		hueFigure = new JTextField("50");
-		satFigure = new JTextField("50");
+		brightnessFigure = new JTextField("50");
+		contrastFigure = new JTextField("50");
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class ColorAdjustment extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ColorAdjustment frame = new ColorAdjustment();
+					BrightnessAdjustment frame = new BrightnessAdjustment();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -41,52 +41,52 @@ public class ColorAdjustment extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ColorAdjustment() {
+	public BrightnessAdjustment() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Change hue and saturation");
+		setTitle("Change brightness and contrasturation");
 		setBounds(100, 100, 350, 180);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 20));
 		
-		final JLabel lblNewLabel = new JLabel("Hue");
+		final JLabel lblNewLabel = new JLabel("Brightness");
 		lblNewLabel.setFont(tahoma14);
 		contentPane.add(lblNewLabel);
 		
-		hueSlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		hueSlider.setFont(tahoma14);
-		contentPane.add(hueSlider);
-		hueSlider.addChangeListener(new ChangeListener() {
+		brightnessSlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		brightnessSlider.setFont(tahoma14);
+		contentPane.add(brightnessSlider);
+		brightnessSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-				hueFigure.setText(Integer.toString(hueSlider.getValue()));
+				brightnessFigure.setText(Integer.toString(brightnessSlider.getValue()));
 			}
 		});
 		
-		hueFigure.setFont(tahoma14);
-		contentPane.add(hueFigure);
-		hueFigure.setColumns(3);
+		brightnessFigure.setFont(tahoma14);
+		contentPane.add(brightnessFigure);
+		brightnessFigure.setColumns(3);
 		
-		final JLabel lblNewLabel_2 = new JLabel("Saturation");
+		final JLabel lblNewLabel_2 = new JLabel("Contrast");
 		lblNewLabel_2.setFont(tahoma14);
 		contentPane.add(lblNewLabel_2);
 		
-		satSlicer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		satSlicer.setFont(tahoma14);
-		contentPane.add(satSlicer);
-		satSlicer.addChangeListener(new ChangeListener() {
+		contrastSlicer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		contrastSlicer.setFont(tahoma14);
+		contentPane.add(contrastSlicer);
+		contrastSlicer.addChangeListener(new ChangeListener() {
 			
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				// TODO Auto-generated method stub
-				satFigure.setText(Integer.toString(satSlicer.getValue()));
+				contrastFigure.setText(Integer.toString(contrastSlicer.getValue()));
 			}
 		});
 		
-		satFigure.setFont(tahoma14);
-		contentPane.add(satFigure);
-		satFigure.setColumns(3);
+		contrastFigure.setFont(tahoma14);
+		contentPane.add(contrastFigure);
+		contrastFigure.setColumns(3);
 		
 		okButton.setIconTextGap(5);
 		okButton.setFocusPainted(false);
