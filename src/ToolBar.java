@@ -1,30 +1,51 @@
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
 
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
+import javax.imageio.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.*;
 public class ToolBar extends JPanel  {
-	ImageContainer imageContainer;
+	public ImageContainer imageContainer;
 	JLabel separate = new JLabel("|");
 	JButton select = new JButton();
 	JButton move = new JButton();
 	JButton zoom = new JButton();
 	JButton save = new JButton();
 	JButton open = new JButton();
+	
+	public ActionListener openAtion = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			imageContainer.importImage(new ImageIcon(getOpenedFile().toString()).getImage());
+			imageContainer.repaint();
+		}
+	};
+	public ActionListener saveAtion = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(imageContainer.getBufferedImage() != null)
+					ImageIO.write(imageContainer.getBufferedImage(), "jpg", getSavedFile());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	};
+	public ActionListener zoomAction = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	};
+	public ActionListener moveAction = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	};
+	public ActionListener selectAction = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	};
+	
 	ToolBar(ImageContainer imageContainer){
 		this.imageContainer = imageContainer;
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
@@ -51,48 +72,14 @@ public class ToolBar extends JPanel  {
 	}
 	private void addEvent()
 	{
-		select.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		move.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		zoom.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		open.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				imageContainer.importImage(new ImageIcon(getOpenedFile().toString()).getImage());
-				imageContainer.repaint();
-			}
-		});
-		save.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					ImageIO.write(imageContainer.getBufferedImage(), "jpg", getSavedFile());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
+		select.addActionListener(selectAction);
+		move.addActionListener(moveAction);
+		zoom.addActionListener(zoomAction);
+		open.addActionListener(openAtion);
+		save.addActionListener(saveAtion);
 	}
 	void setOutlook(JButton[] button){
+		// định dạng nút
 		for(JButton b:button) {
 			b.setPreferredSize(new Dimension(25,25));
 			b.setFocusPainted(false);
@@ -127,5 +114,13 @@ public class ToolBar extends JPanel  {
 			return f;
 		}
 		return null;
+	}
+	public ActionListener open() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				imageContainer.importImage(new ImageIcon(getOpenedFile().toString()).getImage());
+				imageContainer.repaint();
+			}
+		};
 	}
 }

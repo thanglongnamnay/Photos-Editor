@@ -21,11 +21,16 @@ public class ImageContainer extends JPanel{
 		return img;
 	}
 	public BufferedImage getBufferedImage() {
-		BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
-		Graphics2D buffGrap = bi.createGraphics();
-		buffGrap.drawImage(img, 0, 0, null);
-		buffGrap.dispose();
-		return bi;
+		try {
+			BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
+			Graphics2D buffGrap = bi.createGraphics();
+			buffGrap.drawImage(img, 0, 0, null);
+			buffGrap.dispose();
+			return bi;
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "No picture file yet!");
+			return null;
+		}
 	}
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
