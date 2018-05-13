@@ -8,6 +8,7 @@ import javax.swing.*;
 
 public class ImageContainer extends JPanel{
 	Image img;
+	float zoom = 1f;
 	public ImageContainer(Image img) {
 		this.img = img;
 		setSize(300,300);
@@ -35,6 +36,7 @@ public class ImageContainer extends JPanel{
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.clearRect(0, 0, getWidth(), getHeight());
-        g2d.drawImage(img, 0, 0, null);
+        if (img != null)
+        	g2d.drawImage(img, 0, 0, (int) (img.getWidth(null) * zoom), (int) (img.getHeight(null) * zoom), null);
     }
 }

@@ -14,6 +14,8 @@ public class ToolBar extends JPanel  {
 	JButton save = new JButton();
 	JButton open = new JButton();
 	
+	JTextField zoomRate = new JTextField("100%");
+	
 	public ActionListener openAtion = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.importImage(new ImageIcon(getOpenedFile().toString()).getImage());
@@ -57,6 +59,8 @@ public class ToolBar extends JPanel  {
 		open.setIcon(new ImageIcon("src\\icons\\open.png"));
 		JButton[] buttons = {move,zoom,select,save,open};
 		setOutlook(buttons);
+		
+		zoomRate.setMaximumSize(new Dimension(40, 25));
 		addButton();
 		setSize(150,450);
 		setBorder(BorderFactory.createLineBorder(Color.black, 2));
@@ -69,6 +73,7 @@ public class ToolBar extends JPanel  {
 		add(select);
 		add(move);
 		add(zoom);
+		add(zoomRate);
 	}
 	private void addEvent()
 	{

@@ -1,11 +1,14 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.*;
 
 
-public class UI extends JFrame{
+public class UI extends JFrame {
 	Container container;
 	ColorAdjustment colorAdjustment = new ColorAdjustment();
 	BrightnessAdjustment brightnessAdjustment = new BrightnessAdjustment();
@@ -30,6 +33,16 @@ public class UI extends JFrame{
 		addMenu();
 		pack();
 		setVisible(true);
+		getRootPane().addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+                // This is only called when the user releases the mouse button.
+                System.out.println("componentResized");
+                container.setPreferredSize(new Dimension(getWidth(), getHeight()));
+        		container.imageContainer.setBounds(0, 30, container.getPreferredSize().width, container.getPreferredSize().height);
+        		System.out.println(container.imageContainer.getPreferredSize());
+        		repaint();
+            }
+		});
 	}
 	private void addMenu() {
 		
@@ -74,4 +87,5 @@ public class UI extends JFrame{
 			}
 		});
 	}
+	
 }
