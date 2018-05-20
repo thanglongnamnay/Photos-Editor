@@ -89,8 +89,10 @@ public class ToolBar extends JPanel  {
 	public ActionListener selectAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.setCursor(Cursor.getDefaultCursor());
-			imageContainer.removeMouseListener(imageContainer.getMouseListeners()[0]);
-			imageContainer.removeMouseMotionListener(imageContainer.getMouseMotionListeners()[0]);
+			if (imageContainer.getMouseListeners().length > 0) {
+				imageContainer.removeMouseListener(imageContainer.getMouseListeners()[0]);
+				imageContainer.removeMouseMotionListener(imageContainer.getMouseMotionListeners()[0]);
+			}
 		}
 	};
 	public ActionListener undoAction = new ActionListener() {

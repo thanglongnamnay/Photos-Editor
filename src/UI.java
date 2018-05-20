@@ -50,8 +50,8 @@ public class UI extends JFrame {
 		file.add(open);
 		file.add(save);
 		file.add(exit);
-		edit.add(colorAdjust);
 		edit.add(brightAdjust);
+		edit.add(colorAdjust);
 		help.add(about);
 		menuBar.add(file);
 		menuBar.add(edit);
@@ -72,12 +72,14 @@ public class UI extends JFrame {
 		colorAdjust.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				adjusttment.tabbedPane.setSelectedIndex(1);
 				adjusttment.setVisible(true);
 			}
 		});
 		brightAdjust.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				adjusttment.tabbedPane.setSelectedIndex(0);
 				adjusttment.setVisible(true);
 			}
 		});

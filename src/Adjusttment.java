@@ -11,6 +11,7 @@ import javax.swing.event.ChangeListener;
 public class Adjusttment extends JFrame {
 	
 	Container container;
+	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	JPanel 	BriConPanel = new JPanel(),
 			HueSatPanel = new JPanel();
 
@@ -72,7 +73,6 @@ public class Adjusttment extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new CardLayout(0, 0));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);
 
 		BriConPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 20));
