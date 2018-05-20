@@ -5,6 +5,7 @@ import javax.swing.*;
 
 public class Container extends JPanel {
 	ImageContainer imageContainer;
+	ImageProcessor imageProcessor;
 	ToolBar toolbar;
 	Container(){
 		setLayout(null);
@@ -18,6 +19,7 @@ public class Container extends JPanel {
 		toolbar.setBounds(0,0,getPreferredSize().width,25);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		add(toolbar);
+		imageProcessor = new ImageProcessor();
 	}
 	public ToolBar getToolbar() {
 		return toolbar;

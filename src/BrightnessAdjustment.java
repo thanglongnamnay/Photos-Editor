@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Console;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,17 +11,13 @@ import javax.swing.event.ChangeEvent;
 public class BrightnessAdjustment extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField brightnessFigure;
-	private JTextField contrastFigure;
-	JButton okButton = new JButton("OK");
-	JButton cancelButton = new JButton("Cancel");
-	JSlider brightnessSlider = new JSlider();
-	JSlider contrastSlicer = new JSlider();
+	JLabel 	brightnessFigure = new JLabel("0"),
+			contrastFigure = new JLabel("0");
+	JButton okButton = new JButton("OK"),
+			cancelButton = new JButton("Cancel");
+	JSlider brightnessSlider = new JSlider(),
+			contrastSlicer = new JSlider();
 	Font tahoma14 = new Font("Tahoma", Font.PLAIN, 14);
-	{
-		brightnessFigure = new JTextField("50");
-		contrastFigure = new JTextField("50");
-	}
 
 	/**
 	 * Launch the application.
@@ -51,11 +48,9 @@ public class BrightnessAdjustment extends JFrame {
 		
 		final JLabel lblNewLabel = new JLabel("Brightness");
 		lblNewLabel.setFont(tahoma14);
-		contentPane.add(lblNewLabel);
 		
 		brightnessSlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		brightnessSlider.setFont(tahoma14);
-		contentPane.add(brightnessSlider);
 		brightnessSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -65,16 +60,13 @@ public class BrightnessAdjustment extends JFrame {
 		});
 		
 		brightnessFigure.setFont(tahoma14);
-		contentPane.add(brightnessFigure);
-		brightnessFigure.setColumns(3);
+		brightnessFigure.setPreferredSize(new Dimension(40, brightnessFigure.getPreferredSize().height));
 		
 		final JLabel lblNewLabel_2 = new JLabel("Contrast");
 		lblNewLabel_2.setFont(tahoma14);
-		contentPane.add(lblNewLabel_2);
 		
 		contrastSlicer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		contrastSlicer.setFont(tahoma14);
-		contentPane.add(contrastSlicer);
 		contrastSlicer.addChangeListener(new ChangeListener() {
 			
 			@Override
@@ -85,12 +77,10 @@ public class BrightnessAdjustment extends JFrame {
 		});
 		
 		contrastFigure.setFont(tahoma14);
-		contentPane.add(contrastFigure);
-		contrastFigure.setColumns(3);
+		contrastFigure.setPreferredSize(new Dimension(40, contrastFigure.getPreferredSize().height));
 		
 		okButton.setIconTextGap(5);
 		okButton.setFocusPainted(false);
-		contentPane.add(okButton);
 		okButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -102,7 +92,6 @@ public class BrightnessAdjustment extends JFrame {
 		
 		cancelButton.setIconTextGap(5);
 		cancelButton.setFocusPainted(false);
-		contentPane.add(cancelButton);
 		cancelButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -111,6 +100,32 @@ public class BrightnessAdjustment extends JFrame {
 				setVisible(false);
 			}
 		});
+		
+
+		JSlider[] js = {brightnessSlider, contrastSlicer};
+		setSliderStyle(js);
+		Component[] com = {
+				lblNewLabel, 
+				brightnessSlider, 
+				brightnessFigure, 
+				lblNewLabel_2, 
+				contrastSlicer, 
+				contrastFigure, 
+				okButton, 
+				cancelButton};
+		addCom(com);
+	}
+	void setSliderStyle(JSlider[] js) {
+		for (JSlider s : js) {
+			s.setValue(0);
+			s.setMaximum(255);
+			s.setMinimum(-255);
+		}
+	}
+	void addCom(Component[] oject) {
+		for (Component o : oject) {
+			contentPane.add(o);
+		}
 	}
 	void showWindow() {
 		this.setVisible(true);

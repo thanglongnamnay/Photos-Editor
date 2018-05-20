@@ -10,8 +10,7 @@ import javax.swing.*;
 
 public class UI extends JFrame {
 	Container container;
-	ColorAdjustment colorAdjustment = new ColorAdjustment();
-	BrightnessAdjustment brightnessAdjustment = new BrightnessAdjustment();
+	Adjusttment adjusttment;
 	JMenuBar menuBar = new JMenuBar();
 	JMenu file = new JMenu("File");
 	JMenu edit = new JMenu("Edit");
@@ -30,6 +29,7 @@ public class UI extends JFrame {
 		setContentPane(container);
 		System.out.println(container.getWidth() + " " + container.getHeight());
 		container.draw();
+		adjusttment = new Adjusttment(container);
 		addMenu();
 		pack();
 		setVisible(true);
@@ -39,6 +39,7 @@ public class UI extends JFrame {
                 System.out.println("componentResized");
                 container.setPreferredSize(new Dimension(getWidth(), getHeight()));
         		container.imageContainer.setBounds(0, 30, container.getPreferredSize().width, container.getPreferredSize().height);
+        		container.toolbar.setSize(container.getPreferredSize().width-16, 25);
         		System.out.println(container.imageContainer.getPreferredSize());
         		repaint();
             }
@@ -71,13 +72,13 @@ public class UI extends JFrame {
 		colorAdjust.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				colorAdjustment.setVisible(true);
+				adjusttment.setVisible(true);
 			}
 		});
 		brightAdjust.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				brightnessAdjustment.setVisible(true);
+				adjusttment.setVisible(true);
 			}
 		});
 		about.addActionListener(new ActionListener() {

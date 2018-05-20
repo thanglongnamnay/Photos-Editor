@@ -9,18 +9,15 @@ import javax.swing.event.ChangeEvent;
 
 public class ColorAdjustment extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField hueFigure;
-	private JTextField satFigure;
-	JButton okButton = new JButton("OK");
-	JButton cancelButton = new JButton("Cancel");
-	JSlider hueSlider = new JSlider();
-	JSlider satSlicer = new JSlider();
+	JPanel contentPane;
+	JLabel 	hueFigure = new JLabel("0"),
+			satFigure = new JLabel("0");
+	JButton okButton = new JButton("OK"),
+			cancelButton = new JButton("Cancel");
+	JSlider hueSlider = new JSlider(),
+			satSlicer = new JSlider();
 	Font tahoma14 = new Font("Tahoma", Font.PLAIN, 14);
-	{
-		hueFigure = new JTextField("50");
-		satFigure = new JTextField("50");
-	}
+
 
 	/**
 	 * Launch the application.
@@ -49,13 +46,15 @@ public class ColorAdjustment extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 20));
 		
+		JSlider slider = new JSlider();
+		slider.setMinorTickSpacing(2);
+		contentPane.add(slider);
+		
 		final JLabel lblNewLabel = new JLabel("Hue");
 		lblNewLabel.setFont(tahoma14);
-		contentPane.add(lblNewLabel);
 		
 		hueSlider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		hueSlider.setFont(tahoma14);
-		contentPane.add(hueSlider);
 		hueSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -65,16 +64,13 @@ public class ColorAdjustment extends JFrame {
 		});
 		
 		hueFigure.setFont(tahoma14);
-		contentPane.add(hueFigure);
-		hueFigure.setColumns(3);
+		hueFigure.setPreferredSize(new Dimension(40, hueFigure.getPreferredSize().height));
 		
 		final JLabel lblNewLabel_2 = new JLabel("Saturation");
 		lblNewLabel_2.setFont(tahoma14);
-		contentPane.add(lblNewLabel_2);
 		
 		satSlicer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		satSlicer.setFont(tahoma14);
-		contentPane.add(satSlicer);
 		satSlicer.addChangeListener(new ChangeListener() {
 			
 			@Override
@@ -85,12 +81,10 @@ public class ColorAdjustment extends JFrame {
 		});
 		
 		satFigure.setFont(tahoma14);
-		contentPane.add(satFigure);
-		satFigure.setColumns(3);
+		satFigure.setPreferredSize(new Dimension(40, satFigure.getPreferredSize().height));
 		
 		okButton.setIconTextGap(5);
 		okButton.setFocusPainted(false);
-		contentPane.add(okButton);
 		okButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -102,7 +96,6 @@ public class ColorAdjustment extends JFrame {
 		
 		cancelButton.setIconTextGap(5);
 		cancelButton.setFocusPainted(false);
-		contentPane.add(cancelButton);
 		cancelButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -111,6 +104,30 @@ public class ColorAdjustment extends JFrame {
 				setVisible(false);
 			}
 		});
+		JSlider[] js = {hueSlider, satSlicer};
+		setSliderStyle(js);
+		Component[] com = {
+				lblNewLabel, 
+				hueSlider, 
+				hueFigure, 
+				lblNewLabel_2, 
+				satSlicer, 
+				satFigure, 
+				okButton, 
+				cancelButton};
+		addCom(com);
+	}
+	void setSliderStyle(JSlider[] js) {
+		for (JSlider s : js) {
+			s.setValue(0);
+			s.setMaximum(255);
+			s.setMinimum(-255);
+		}
+	}
+	void addCom(Component[] oject) {
+		for (Component o : oject) {
+			contentPane.add(o);
+		}
 	}
 	void showWindow() {
 		this.setVisible(true);
