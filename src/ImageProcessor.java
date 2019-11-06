@@ -1,23 +1,42 @@
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Stream;
 
 public class ImageProcessor {
 
-	public BufferedImage getAdjustedBufferedImage(BufferedImage bi, int briDelta, int conDelta, int hueDelta, int satDelta) {
+	BufferedImage getAdjustedBufferedImage(BufferedImage bufferedImage, int briDelta, int conDelta, int hueDelta, int satDelta) {
+		System.out.println(briDelta);
+		System.out.println(conDelta);
+		System.out.println(hueDelta);
+		System.out.println(satDelta);
+		BufferedImage bi = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
 		int[][] pixels = new int[bi.getWidth()][bi.getHeight()];
-		for (int i = 0; i < bi.getWidth(); i++) 
+		for (int i = 0; i < bi.getWidth(); i++)
 			for (int j = 0; j < bi.getHeight(); j++) {
-				pixels[i][j] = bi.getRGB(i, j);
+				pixels[i][j] = bufferedImage.getRGB(i, j);
 				Color c = new Color(pixels[i][j]);
 				c = briConChange(c, briDelta, conDelta);
 				c = hueSatChange(c, hueDelta, satDelta);
 				bi.setRGB(i, j, c.getRGB());
 			}
 		return bi;
+
+//		return (new GrayScaleMap(bi)).getBalancedImage();
+	}
+
+	BufferedImage getBalancedBufferedImage(BufferedImage bufferedImage) {
+		return (new GrayScaleMap(bufferedImage)).getBalancedImage();
+	}
+
+	BufferedImage getMeanBufferedImage(BufferedImage bufferedImage)  {
+		return new GrayScaleMap(bufferedImage).getMeanImage();
 	}
 	
-	public Color briConChange(Color color, int briDelta, int conDelta) {
+	private Color briConChange(Color color, int briDelta, int conDelta) {
 		int 	r = color.getRed(),
 				g = color.getGreen(),
 				b = color.getBlue();
@@ -31,25 +50,197 @@ public class ImageProcessor {
 		b = trunc((int)(contrastFactor * (b - 128) + 128));
 		return new Color(r, g, b);
 	}
-	Color hueSatChange(Color c, int hueDelta, int satDelta) {
+	private Color hueSatChange(Color c, int hueDelta, int satDelta) {
 		float[] hsb = new float[3];
 		Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), hsb);
 		hsb[0] = trunc(hsb[0] + (float)hueDelta / 255);
 		hsb[1] = trunc(hsb[1] + (float)satDelta / 255);
 		return Color.getHSBColor(hsb[0], hsb[1], hsb[2]);
 	}
-	int trunc(int value) {
+
+	private int trunc(int value) {
 		if(value > 255) return 255;
-		if(value < 0) return 0;
-		return value;
+		return Math.max(value, 0);
 	}
-	float trunc(float value) {
+	private float trunc(float value) {
 		if(value > 1) return 1;
 		if(value < 0) return 0;
 		return value;
 	}
-	public static void main(String[] s) {
-		ImageProcessor ip = new ImageProcessor();
-		System.out.println(ip.trunc((int)(0.99f * (150 - 128) + 128)));;
-	  }
+	private float trunc(double value) {
+		if(value > 1) return 1;
+		if(value < 0) return 0;
+		return (float)value;
+	}
+}
+
+class Utils {
+	public static int trunc(int value) {
+		if(value > 255) return 255;
+		return Math.max(value, 0);
+	}
+	public static float trunc(float value) {
+		if(value > 1) return 1;
+		if(value < 0) return 0;
+		return value;
+	}
+	public static float trunc(double value) {
+		if(value > 1) return 1;
+		if(value < 0) return 0;
+		return (float)value;
+	}
+
+	public static int max(int[] a) {
+		if (a.length == 0) return -1;
+		return Arrays.stream(a).max().getAsInt();
+	}
+}
+
+class GrayScaleMap {
+	private final int[][] pixels;
+	private long[] before = new long[256];
+	private BufferedImage bufferedImage;
+
+	long sum;
+
+	GrayScaleMap(BufferedImage bi) {
+		System.out.println("started");
+		bufferedImage = bi;
+		pixels = new int[bi.getWidth()][bi.getHeight()];
+		for (int i = 0; i < bi.getWidth(); i++) {
+			for (int j = 0; j < bi.getHeight(); j++) {
+				Color c = new Color(bi.getRGB(i, j));
+				int gray = (int) Math.round((c.getRed() * 0.299)
+						+ (c.getGreen() * 0.587)
+						+ (c.getBlue() *0.114));
+				pixels[i][j] = gray;
+				before[gray] += 1;
+			}
+		}
+		sum = Arrays.stream(before).sum();
+	}
+
+	BufferedImage getMeanImage() {
+		int[][] pixelsMean = calPixelsMod(3);
+		BufferedImage bi = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+		for (int i = 0; i < bufferedImage.getWidth(); i++) {
+			for (int j = 0; j < bufferedImage.getHeight(); j++) {
+				Color c = new Color(bufferedImage.getRGB(i, j));
+				if (pixels[i][j] == 0) {
+					int alpha = pixelsMean[i][j];
+					bi.setRGB(i, j, new Color(alpha, alpha, alpha).getRGB());
+				} else {
+					double scale = (double) pixelsMean[i][j] / pixels[i][j];
+					Color newColor = new Color(scale(c.getRed(), scale),
+							scale(c.getGreen(), scale),
+							scale(c.getBlue(), scale));
+					bi.setRGB(i, j, newColor.getRGB());
+				}
+			}
+		}
+
+		System.out.println("finished");
+		return bi;
+	}
+
+	BufferedImage getBalancedImage() {
+		long[] after = calcAfterBalance();
+		long[] map = calcMap(after);
+		BufferedImage bi = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+		for (int i = 0; i < bufferedImage.getWidth(); i++) {
+			for (int j = 0; j < bufferedImage.getHeight(); j++) {
+				Color c = new Color(bufferedImage.getRGB(i, j));
+				if (pixels[i][j] == 0) {
+					int alpha = (int) map[pixels[i][j]];
+					bi.setRGB(i, j, new Color(alpha, alpha, alpha).getRGB());
+				} else {
+					double scale = (double) map[pixels[i][j]] / pixels[i][j];
+					Color newColor = new Color(scale(c.getRed(), scale),
+							scale(c.getGreen(), scale),
+							scale(c.getBlue(), scale));
+					bi.setRGB(i, j, newColor.getRGB());
+				}
+			}
+		}
+		System.out.println("finished");
+		return bi;
+	}
+
+	int scale(int c, double scale) {
+		return Utils.trunc((int)Math.floor(c * scale));
+	}
+
+	int[][] calPixelsMod(int kmean) {
+		int left = kmean / 2;
+		int height = pixels.length;
+		int width = pixels[0].length;
+		int[][] after = new int[height][width];
+		for (int i = 0; i < height; ++i) {
+			for (int j = 0; j < width; ++j) {
+				if (i < left || j < left || i >= height - left || j >= width - left) {
+					after[i][j] = pixels[i][j];
+				} else {
+
+					ArrayList<Integer> arr = new ArrayList<>();
+					for (int k = -left; k <= left; ++k) {
+						for (int l = -left; l <= left; ++l) {
+							int t = pixels[i+k][j+l];
+							if (arr.stream().noneMatch(x -> x == t)) {
+								arr.add(t);
+							}
+						}
+					}
+					after[i][j] = (int) arr.stream().sorted().toArray()[arr.size() / 2];
+				}
+//				System.out.println(pixels[i][j] + ", " + after[i][j]);
+			}
+		}
+
+		return after;
+	}
+
+	int[][] calPixelsMean(int kmean) {
+		double mean = 1d / kmean / kmean;
+		int left = kmean / 2;
+		int height = pixels.length;
+		int width = pixels[0].length;
+		int[][] after = new int[height][width];
+		for (int i = 0; i < height; ++i) {
+			for (int j = 0; j < width; ++j) {
+				if (i < left || j < left || i >= height - left || j >= width - left) {
+					after[i][j] = pixels[i][j];
+				} else {
+					after[i][j] = 0;
+					for (int k = -left; k <= left; ++k) {
+						for (int l = -left; l <= left; ++l) {
+							after[i][j] += (int) (mean * pixels[i+k][j+l]);
+						}
+					}
+				}
+//				System.out.println(pixels[i][j] + ", " + after[i][j]);
+			}
+		}
+
+		return after;
+	}
+
+	long[] calcAfterBalance() {
+		long[] after = new long[256];
+		after[0] = before[0];
+		for (int i = 1; i < 256; ++i) {
+			after[i] = after[i - 1] + before[i];
+		}
+
+		return after;
+	}
+
+	long[] calcMap(long[] after) {
+		long[] map = new long[256];
+		for (int i = 0; i < 256; ++i) {
+			map[i] = after[i] * 255 / sum;
+//			System.out.println(map[i]);
+		}
+
+		return map;
+	}
 }

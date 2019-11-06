@@ -12,7 +12,7 @@ public class Container extends JPanel {
 		setPreferredSize(new Dimension(800,600));
 	}
 	void draw() { 
-		imageContainer = new ImageContainer(null);
+		imageContainer = new ImageContainer(null, this);
 		imageContainer.setBounds(0, 30, getPreferredSize().width, getPreferredSize().height-30);
 		add(imageContainer); 
 		toolbar = new ToolBar(imageContainer);
@@ -21,10 +21,7 @@ public class Container extends JPanel {
 		add(toolbar);
 		imageProcessor = new ImageProcessor();
 	}
-	public ToolBar getToolbar() {
+	ToolBar getToolbar() {
 		return toolbar;
-	}
-	public ImageContainer getImageContainer() {
-		return imageContainer;
 	}
 }

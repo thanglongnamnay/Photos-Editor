@@ -64,31 +64,22 @@ public class UI extends JFrame {
 		ToolBar tb = container.getToolbar();
 		open.addActionListener(tb.openAtion);
 		save.addActionListener(tb.saveAtion);
-		exit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
+		exit.addActionListener(e -> System.exit(0));
+		colorAdjust.addActionListener(e -> {
+			// TODO Auto-generated method stub
+			adjusttment.tabbedPane.setSelectedIndex(1);
+			adjusttment.setVisible(true);
 		});
-		colorAdjust.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				adjusttment.tabbedPane.setSelectedIndex(1);
-				adjusttment.setVisible(true);
-			}
-		});
-		brightAdjust.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				adjusttment.tabbedPane.setSelectedIndex(0);
-				adjusttment.setVisible(true);
-			}
-		});
-		about.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+		brightAdjust.addActionListener(// TODO Auto-generated method stub
+				this::actionPerformed);
+		about.addActionListener(e -> {
+			// TODO Auto-generated method stub
+			JOptionPane.showMessageDialog(null, "Tác giả: Nguyễn Văn Long.", "About", JOptionPane.INFORMATION_MESSAGE);
 		});
 	}
-	
+
+	private void actionPerformed(ActionEvent e) {
+		adjusttment.tabbedPane.setSelectedIndex(0);
+		adjusttment.setVisible(true);
+	}
 }

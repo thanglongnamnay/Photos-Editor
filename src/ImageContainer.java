@@ -7,11 +7,13 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class ImageContainer extends JPanel{
+	Container container;
 	Image[] img = new Image[999];
 	int currentImage = 0, lastImage = 0;
 	public int x = 0, y = 0, pressedX, pressedY;
 	public float zoom = 1f;
-	public ImageContainer(Image img) {
+	public ImageContainer(Image img, Container container) {
+		this.container = container;
 		this.img[currentImage] = img;
 		setSize(300,300);
 		setBorder(BorderFactory.createLineBorder(Color.black,1));
@@ -37,9 +39,12 @@ public class ImageContainer extends JPanel{
 		}
 	}
 	void newImage(BufferedImage bi) {
-		currentImage++;
+		currentImage = (currentImage + 1) % 999;
 		img[currentImage] = bi;
 		if (currentImage > lastImage) lastImage = currentImage;
+		repaint();
+		clearUnnecessaryImages();
+		container.toolbar.undo.setEnabled(true);
 	}
 	void clearUnnecessaryImages() {
 		for (int i = currentImage + 1; i <= lastImage; i++) {

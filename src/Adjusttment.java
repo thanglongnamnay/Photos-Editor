@@ -80,31 +80,24 @@ public class Adjusttment extends JFrame {
 		tabbedPane.addTab("Brightness and Constract", null, BriConPanel, "Fuck");
 		tabbedPane.addTab("Hue and Saturation", null, HueSatPanel, "off");
 		tabbedPane.setFocusable(false);
-		OKAction = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				ImageContainer ic = container.imageContainer;
-				BufferedImage bi = ic.getBufferedImage();
-				if (bi != null) {
-					bi = container.imageProcessor.getAdjustedBufferedImage(
-							bi, 
-							brightnessSlider.getValue(), 
-							contrastSlicer.getValue(), 
-							hueSlider.getValue(), 
-							satSlicer.getValue());
-					container.imageContainer.newImage(bi);
-					container.imageContainer.repaint();
-					container.imageContainer.clearUnnecessaryImages();
-					container.toolbar.undo.setEnabled(true);
-				}
-				resetValue(valuedComponents);
+		OKAction = e -> {
+			setVisible(false);
+			final ImageContainer imageContainer = container.imageContainer;
+			BufferedImage bi = imageContainer.getBufferedImage();
+			if (bi != null) {
+				bi = container.imageProcessor.getAdjustedBufferedImage(
+						bi,
+						brightnessSlider.getValue(),
+						contrastSlicer.getValue(),
+						hueSlider.getValue(),
+						satSlicer.getValue());
+				imageContainer.newImage(bi);
 			}
+			resetValue(valuedComponents);
 		};
-		cancelAction = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				resetValue(valuedComponents);
-			}
+		cancelAction = e -> {
+			setVisible(false);
+			resetValue(valuedComponents);
 		};
 		initBriCon();
 		initHueSat();

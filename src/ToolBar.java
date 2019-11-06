@@ -8,19 +8,27 @@ import javax.swing.filechooser.*;
 import javax.swing.text.JTextComponent;
 public class ToolBar extends JPanel  {
 	public ImageContainer imageContainer;
-	JLabel separate = new JLabel("|");
-	JButton select = new JButton();
-	JButton move = new JButton();
+	private JLabel separate = new JLabel("|");
+	private JButton select = new JButton();
+	private JButton move = new JButton();
 	JButton undo = new JButton();
-	JButton redo = new JButton();
-	JButton zoomIn = new JButton();
-	JButton zoomOut = new JButton();
-	JButton save = new JButton();
-	JButton open = new JButton();
+	private JButton redo = new JButton();
+	private JButton zoomIn = new JButton();
+	private JButton zoomOut = new JButton();
+	private JButton save = new JButton();
+	private JButton open = new JButton();
+	private JButton balance = new JButton();
+	private JButton reduceNoise = new JButton();
 	
-	JTextField zoomRate = new JTextField("100%");
-	
-	public ActionListener openAtion = new ActionListener() {
+	private JTextField zoomRate = new JTextField("100%");
+
+	ActionListener balanceAction = e -> {
+		imageContainer.newImage((new ImageProcessor()).getBalancedBufferedImage(imageContainer.getBufferedImage()));
+	};
+	ActionListener meanAction = e -> {
+		imageContainer.newImage((new ImageProcessor()).getMeanBufferedImage(imageContainer.getBufferedImage()));
+	};
+	ActionListener openAtion = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.resetImagePosition();
 			File f = getOpenedFile();
@@ -30,17 +38,17 @@ public class ToolBar extends JPanel  {
 			}
 		}
 	};
-	public ActionListener saveAtion = new ActionListener() {
+	ActionListener saveAtion = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(imageContainer.getBufferedImage() != null)
 					ImageIO.write(imageContainer.getBufferedImage(), "jpg", getSavedFile());
 			} catch (IOException e1) {
-				e1.toString();
+				e1.printStackTrace();
 			}
 		}
 	};
-	public ActionListener zoomInAction = new ActionListener() {
+	private ActionListener zoomInAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.zoom += 0.1f;
 			zoomRate.setText(Integer.toString(Math.round(imageContainer.zoom * 100)));
@@ -49,7 +57,7 @@ public class ToolBar extends JPanel  {
 			imageContainer.repaint();
 		}
 	};
-	public ActionListener zoomOutAction = new ActionListener() {
+	private ActionListener zoomOutAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.zoom -= 0.1f;
 			zoomRate.setText(Math.round(imageContainer.zoom * 100)+"%");
@@ -57,7 +65,7 @@ public class ToolBar extends JPanel  {
 			imageContainer.repaint();
 		}
 	};
-	public ActionListener moveAction = new ActionListener() {
+	private ActionListener moveAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			imageContainer.addMouseListener(new MouseListener() {
@@ -86,7 +94,7 @@ public class ToolBar extends JPanel  {
 			});
 		}
 	};
-	public ActionListener selectAction = new ActionListener() {
+	private ActionListener selectAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.setCursor(Cursor.getDefaultCursor());
 			if (imageContainer.getMouseListeners().length > 0) {
@@ -95,7 +103,7 @@ public class ToolBar extends JPanel  {
 			}
 		}
 	};
-	public ActionListener undoAction = new ActionListener() {
+	private ActionListener undoAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if(imageContainer.currentImage-1 >= 0) {
 				imageContainer.currentImage--;
@@ -105,7 +113,7 @@ public class ToolBar extends JPanel  {
 			}
 		}
 	};
-	public ActionListener redoAction = new ActionListener() {
+	private ActionListener redoAction = new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			imageContainer.currentImage++;
 			imageContainer.repaint();
@@ -119,9 +127,10 @@ public class ToolBar extends JPanel  {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		separate.setFont(new Font("arial",Font.PLAIN,30));
 		addIcons();
+		setTooltip();
 		undo.setEnabled(false);
 		redo.setEnabled(false);
-		JButton[] buttons = {move,undo,redo,zoomIn,zoomOut,select,save,open};
+		JButton[] buttons = {move,undo,redo,zoomIn,zoomOut,select,save,open, balance, reduceNoise};
 		setOutlook(buttons);
 		
 		zoomRate.setMaximumSize(new Dimension(40, 25));
@@ -139,7 +148,7 @@ public class ToolBar extends JPanel  {
 		setBorder(BorderFactory.createLineBorder(Color.black, 2));
 		addEvents();
 	}
-	String textFilter(String s) {
+	private String textFilter(String s) {
 		int i = 0;
 		String filtedString = "";
 		while((i < s.length())&& ("0123456789".contains(new String(new char[] {s.charAt(i)})))) {
@@ -156,9 +165,18 @@ public class ToolBar extends JPanel  {
 		add(move);
 		add(undo);
 		add(redo);
+		add(balance);
+		add(reduceNoise);
+		add(separate);
 		add(zoomIn);
 		add(zoomOut);
 		add(zoomRate);
+	}
+	private void setTooltip() {
+		open.setToolTipText("Open file");
+		save.setToolTipText("Save");
+		balance.setToolTipText("Balance with histogram");
+		reduceNoise.setToolTipText("Blur with median");
 	}
 	private void addEvents()
 	{
@@ -170,18 +188,22 @@ public class ToolBar extends JPanel  {
 		zoomOut.addActionListener(zoomOutAction);
 		open.addActionListener(openAtion);
 		save.addActionListener(saveAtion);
+		balance.addActionListener(balanceAction);
+		reduceNoise.addActionListener(meanAction);
 	}
 	private void addIcons() {
-		move.setIcon(new ImageIcon("src\\icons\\hand.png"));
-		zoomIn.setIcon(new ImageIcon("src\\icons\\zoomIn.png"));
-		zoomOut.setIcon(new ImageIcon("src\\icons\\zoomOut.png"));
-		select.setIcon(new ImageIcon("src\\icons\\select.png"));
-		save.setIcon(new ImageIcon("src\\icons\\save.png"));
-		open.setIcon(new ImageIcon("src\\icons\\open.png"));
-		undo.setIcon(new ImageIcon("src\\icons\\undo.png"));
-		redo.setIcon(new ImageIcon("src\\icons\\redo.png"));
+		move.setIcon(new ImageIcon("src/icons/hand.png"));
+		zoomIn.setIcon(new ImageIcon("src/icons/zoomIn.png"));
+		zoomOut.setIcon(new ImageIcon("src/icons/zoomOut.png"));
+		select.setIcon(new ImageIcon("src/icons/select.png"));
+		save.setIcon(new ImageIcon("src/icons/save.png"));
+		open.setIcon(new ImageIcon("src/icons/open.png"));
+		undo.setIcon(new ImageIcon("src/icons/undo.png"));
+		redo.setIcon(new ImageIcon("src/icons/redo.png"));
+		balance.setIcon(new ImageIcon("src/icons/balance.png"));
+		reduceNoise.setIcon(new ImageIcon("src/icons/noise reducer.png"));
 	}
-	void setOutlook(JButton[] button){
+	private void setOutlook(JButton[] button){
 		// định dạng nút
 		for(JButton b:button) {
 			b.setPreferredSize(new Dimension(25,25));
@@ -194,7 +216,7 @@ public class ToolBar extends JPanel  {
 			b.setContentAreaFilled(false);
 		}
 	}
-	File getOpenedFile() {
+	private File getOpenedFile() {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter("Jpeg images", "jpg"));
 		fc.setAcceptAllFileFilterUsed(false);
@@ -204,24 +226,14 @@ public class ToolBar extends JPanel  {
 		} 
 		return null;
 	}
-	File getSavedFile() {
+	private File getSavedFile() {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileFilter(new FileNameExtensionFilter("Jpeg images", "jpg"));
 		fc.setAcceptAllFileFilterUsed(false);
 		int returnValue = fc.showSaveDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			File f = fc.getSelectedFile();
-			f = new File(f.toString()+".jpg");
-			return f;
+			return fc.getSelectedFile();
 		}
 		return null;
-	}
-	public ActionListener open() {
-		return new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				imageContainer.importImage(new ImageIcon(getOpenedFile().toString()).getImage());
-				imageContainer.repaint();
-			}
-		};
 	}
 }
