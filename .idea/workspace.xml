@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="464b4e0b-36df-4038-84fe-843fe6e5b09b" name="Default Changelist" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ColorAdjustmentWindow.class" afterPath="$PROJECT_DIR$/bin/ColorAdjustmentWindow.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/Container.class" afterPath="$PROJECT_DIR$/bin/Container.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/DisplayImageEx$1.class" afterPath="$PROJECT_DIR$/bin/DisplayImageEx$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/DisplayImageEx.class" afterPath="$PROJECT_DIR$/bin/DisplayImageEx.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ImageContainer.class" afterPath="$PROJECT_DIR$/bin/ImageContainer.class" />
-      <change type="MODIFICATION" beforePath="D:\longnt18\Photos-Editor\bin\ImageProcessor.class" afterPath="D:\longnt18\Photos-Editor\bin\ImageProcessor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/Surface.class" afterPath="$PROJECT_DIR$/bin/Surface.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ToolBar$1.class" afterPath="$PROJECT_DIR$/bin/ToolBar$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ToolBar$2.class" afterPath="$PROJECT_DIR$/bin/ToolBar$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ToolBar$3.class" afterPath="$PROJECT_DIR$/bin/ToolBar$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ToolBar$4.class" afterPath="$PROJECT_DIR$/bin/ToolBar$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ToolBar$5.class" afterPath="$PROJECT_DIR$/bin/ToolBar$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/ToolBar.class" afterPath="$PROJECT_DIR$/bin/ToolBar.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/UI.class" afterPath="$PROJECT_DIR$/bin/UI.class" />
+    <list default="true" id="464b4e0b-36df-4038-84fe-843fe6e5b09b" name="Default Changelist" comment="Minor buc fix">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImageProcessor.java" afterPath="$PROJECT_DIR$/src/ImageProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/XuLy.iml" afterPath="$PROJECT_DIR$/XuLy.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path=".idea/dataSources.local.xml" />
@@ -78,8 +62,8 @@
       <file leaf-file-name="ImageProcessor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ImageProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.732852">
-              <caret line="170" column="29" selection-start-line="170" selection-start-column="29" selection-end-line="170" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.4675768">
+              <caret line="138" column="60" selection-start-line="138" selection-start-column="60" selection-end-line="138" selection-end-column="60" />
               <folding>
                 <element signature="e#4549#4550#0" expanded="true" />
                 <element signature="e#4602#4603#0" expanded="true" />
@@ -296,16 +280,16 @@
       <workItem from="1572830668220" duration="7397000" />
       <workItem from="1572842221153" duration="3070000" />
       <workItem from="1573001738065" duration="9752000" />
-      <workItem from="1573642319342" duration="2354000" />
+      <workItem from="1573642319342" duration="2963000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2354000" />
+    <option name="totallyTimeSpent" value="2963000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -339,9 +323,13 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Minor buc fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor buc fix" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -381,8 +369,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ImageProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.732852">
-          <caret line="170" column="29" selection-start-line="170" selection-start-column="29" selection-end-line="170" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.4675768">
+          <caret line="138" column="60" selection-start-line="138" selection-start-column="60" selection-end-line="138" selection-end-column="60" />
           <folding>
             <element signature="e#4549#4550#0" expanded="true" />
             <element signature="e#4602#4603#0" expanded="true" />

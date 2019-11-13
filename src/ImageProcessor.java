@@ -152,8 +152,8 @@ class GrayScaleMap {
 
 	int[][][] calPixelsMod(int kmean) {
 		int left = kmean / 2;
-		int height = pixels.length;
-		int width = pixels[0].length;
+		int height = pixels[0].length;
+		int width = pixels[0][0].length;
 		int[][][] after = new int[3][height][width];
 		for (int channel = 0; channel < 3; ++channel) {
 			for (int i = 0; i < height; ++i) {
